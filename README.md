@@ -4,8 +4,8 @@
 <h3>Evaluating and Auditing Real-world AI Agent Privacy</h3>
 
 <p>
-  <a href="https://voidreaming.github.io/agentprivarena/assets/agentprivarena.pdf"><img src="https://img.shields.io/badge/Paper-PDF-b31b1b" alt="Read the paper"></a>
-  <a href="https://voidreaming.github.io/agentprivarena/"><img src="https://img.shields.io/badge/Project-Website-2563eb" alt="Project website"></a>
+  <a href="https://shouju-wang.github.io/agentprivarena/assets/agentprivarena.pdf"><img src="https://img.shields.io/badge/Paper-PDF-b31b1b" alt="Read the paper"></a>
+  <a href="https://shouju-wang.github.io/agentprivarena/"><img src="https://img.shields.io/badge/Project-Website-2563eb" alt="Project website"></a>
   <a href="agentprivarena/docs/reproduction.md"><img src="https://img.shields.io/badge/Guide-Reproduction-15803d" alt="Reproduction guide"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/Code-MIT-64748b" alt="Code license: MIT"></a>
 </p>
@@ -56,10 +56,10 @@ Together, these services expose **28 MCP tools: 13 discovery, 8 access, and
 7 write tools**. These classes describe tool intent, not a privacy boundary:
 search results can themselves contain sensitive record content.
 
-Versions come from [Table 2 of the paper](https://voidreaming.github.io/agentprivarena/assets/agentprivarena.pdf#page=3).
+Versions come from [Table 2 of the paper](https://shouju-wang.github.io/agentprivarena/assets/agentprivarena.pdf#page=3).
 [Docker Compose](agentprivarena/docker-compose.yml) pins all six images by
 **full SHA-256 digest**. See the [MCP adapters](agentprivarena/mcp_servers/) and
-[tool inventory](https://voidreaming.github.io/agentprivarena/assets/agentprivarena.pdf#page=12)
+[tool inventory](https://shouju-wang.github.io/agentprivarena/assets/agentprivarena.pdf#page=12)
 for implementation and provenance.
 
 ### Trajectory-level privacy evaluation
@@ -113,7 +113,7 @@ auditing, **not a mechanism that hides sensitive context from the model**.
 > **46.8% → 17.8% leakage** (−29.0 percentage points), with average helpfulness
 > at 2.60 → 2.59 / 3 under contextual-integrity auditing.
 
-Reported results from [Table 4 of the paper](https://voidreaming.github.io/agentprivarena/assets/agentprivarena.pdf#page=6),
+Reported results from [Table 4 of the paper](https://shouju-wang.github.io/agentprivarena/assets/agentprivarena.pdf#page=6),
 pooled across five executors. Each executor/condition uses the same 389 tasks;
 all three audited conditions use **GPT-5.4 as the auditor**.
 
@@ -239,7 +239,7 @@ agent runtime and reusable AgentPrivAudit implementation.**
 ├── examples/                           SDK usage examples
 ├── scripts/                            Development checks and public source export
 ├── docs/                               SDK and website documentation
-├── dist/                               Project website, paper, and original figures
+├── dist/                               Legacy website redirect, paper, and original figures
 ├── public-release.toml                 Public source-export allowlist
 ├── pyproject.toml                      Workspace, dependencies, and test settings
 └── uv.lock                             Locked dependency versions

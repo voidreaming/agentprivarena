@@ -10,7 +10,7 @@ authors:
   - family-names: Zhang
     given-names: Haopeng
 repository-code: 'https://github.com/voidreaming/agentprivarena'
-url: 'https://voidreaming.github.io/agentprivarena/'
+url: 'https://shouju-wang.github.io/agentprivarena/'
 preferred-citation:
   type: generic
   title: 'AgentPrivArena: Evaluating and Auditing Real-world AI Agent Privacy'
