@@ -1,0 +1,48 @@
+---
+name: AgentPrivArena tests
+
+on:
+    workflow_dispatch:
+    push:
+        branches: [main]
+    pull_request:
+        paths:
+            - agentprivarena/**
+            - privacylens_live/**
+            - openhands-sdk/**
+            - openhands-tools/**
+            - openhands-workspace/**
+            - openhands-agent-server/**
+            - tests/privacylens_live/**
+            - tests/sdk/privacy/**
+            - tests/sdk/testing/**
+            - tests/tools/apply_patch/**
+            - tests/sdk/agent/test_privacy_extraction.py
+            - scripts/export_public_release.py
+            - public-release.toml
+            - pyproject.toml
+            - uv.lock
+            - .github/workflows/privacylens-tests.yml
+
+permissions:
+    contents: read
+
+jobs:
+    research-tests:
+        runs-on: ubuntu-latest
+        timeout-minutes: 15
+        steps:
+            - uses: actions/checkout@v6
+            - uses: astral-sh/setup-uv@v7
+              with:
+                  python-version: '3.13'
+                  enable-cache: true
+            - name: Install locked dependencies
+              run: uv sync --frozen --dev
+            - name: Run offline research and privacy tests
+              run: >-
+                  uv run pytest privacylens_live/tests tests/privacylens_live
+                  tests/sdk/privacy tests/sdk/agent/test_privacy_extraction.py
+                  tests/sdk/testing tests/tools/apply_patch
+            - name: Check public file selection
+              run: uv run python scripts/export_public_release.py

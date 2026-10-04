@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: >-
+  If you use AgentPrivArena or AgentPrivAudit, please cite the accompanying
+  paper using the title and authors below. No arXiv identifier is assigned here.
+title: 'AgentPrivArena: Evaluating and Auditing Real-world AI Agent Privacy'
+type: software
+authors:
+  - family-names: Wang
+    given-names: Shouju
+  - family-names: Zhang
+    given-names: Haopeng
+repository-code: 'https://github.com/voidreaming/agentprivarena'
+url: 'https://voidreaming.github.io/agentprivarena/'
+preferred-citation:
+  type: generic
+  title: 'AgentPrivArena: Evaluating and Auditing Real-world AI Agent Privacy'
+  authors:
+    - family-names: Wang
+      given-names: Shouju
+    - family-names: Zhang
+      given-names: Haopeng
+  url: 'https://openreview.net/forum?id=zxllNfqsYS'
