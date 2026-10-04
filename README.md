@@ -23,11 +23,10 @@
 
 </div>
 
-**Evaluate what agents read—not only what they reveal.** AgentPrivArena studies
-how AI agents access, accumulate, and disclose sensitive information while
-completing real tasks. It combines an executable MCP environment,
-trajectory-level privacy metrics, and **AgentPrivAudit**, a configurable runtime
-auditor that checks information flows before outbound actions.
+**AgentPrivArena brings privacy evaluation to live agent workflows:** real MCP
+services, trajectory-level privacy metrics, and **AgentPrivAudit**—a runtime
+auditor that checks information flows after reads and before writes under
+configurable privacy policies.
 
 <p align="center">
   <img src="dist/assets/figures/figure-1-overview.png" width="100%" alt="AgentPrivArena converts scenarios into seeded services. An agent discovers records through real MCP calls, accumulates observations, and commits an action.">
@@ -44,14 +43,14 @@ Run privacy-sensitive tasks against six self-hosted applications through real
 MCP tools. Synthetic records are seeded into service state, so agents discover
 information and act on live applications.
 
-| Service | Application function | Version used in the paper | Example MCP tools |
-| --- | --- | :---: | --- |
-| [BookStack](https://www.bookstackapp.com) | Knowledge base | **26.03.3** | `search_pages`, `read_page`, `create_page` |
-| [Mattermost](https://mattermost.com) | Direct messaging | **11.6.0** | `search_messages`, `read_messages`, `send_message` |
-| [Rocket.Chat](https://www.rocket.chat) | Team chat | **6.13** | `list_channels`, `read_channel_history`, `send_channel_message` |
-| [Mailpit](https://mailpit.axllent.org) | Email | **1.29.7** | `search_emails`, `read_email`, `send_email` |
-| [GoToSocial](https://gotosocial.org) | Social media | **0.21.2** | `search_users`, `read_user_posts`, `create_post` |
-| [Radicale](https://radicale.org) | Calendar scheduling | **3.6.1** | `search_events`, `list_events`, `read_event` |
+| Service | Role | Version |
+| --- | --- | ---: |
+| [BookStack](https://www.bookstackapp.com) | Knowledge base | `26.03.3` |
+| [Mattermost](https://mattermost.com) | Direct messages | `11.6.0` |
+| [Rocket.Chat](https://www.rocket.chat) | Team chat | `6.13` |
+| [Mailpit](https://mailpit.axllent.org) | Email | `1.29.7` |
+| [GoToSocial](https://gotosocial.org) | Social media | `0.21.2` |
+| [Radicale](https://radicale.org) | Calendar | `3.6.1` |
 
 Together, these services expose **28 MCP tools: 13 discovery, 8 access, and
 7 write tools**. These classes describe tool intent, not a privacy boundary:
@@ -68,11 +67,17 @@ for implementation and provenance.
 Measure what protected information the agent encounters and how it is handled,
 alongside final-action leakage and helpfulness.
 
-| Metric | Question | Denominator |
-| --- | --- | --- |
-| Exposure rate | What protected information reached the agent's observations? | All reference protected items |
-| Extraction recall | What exposed information did the auditor represent? | Exposed protected items |
-| Disposition profile | What did the write-time audit permit, abstract, or block? | Extracted flows |
+| Metric | Definition |
+| --- | :---: |
+| Exposure rate | $\frac{E}{R}$ |
+| Extraction recall | $\frac{X}{E}$ |
+| Disposition share | $\frac{F_d}{F}$ |
+
+Counts are pooled over task executions within a condition: $R$ reference
+protected items, $E$ exposed items, and $X$ exposed items represented by the
+auditor. $F$ counts extracted flows, and $F_d$ those assigned
+$d\in\lbrace\mathrm{PASS},\mathrm{ABSTRACT},\mathrm{BLOCK}\rbrace$.
+An item may produce multiple flows; the denominators are deliberately distinct.
 
 ### AgentPrivAudit: a modular runtime auditor
 
@@ -80,48 +85,52 @@ Audit information flows after reads and before writes. Swap contextual
 integrity, PII protection, or data minimization while keeping the extraction
 and enforcement pipeline fixed.
 
-<p align="center">
-  <img src="dist/assets/figures/figure-2-audit-framework.png" width="620" alt="AgentPrivAudit attaches after read observations and before outbound writes. A shared flow inventory informs write decisions, and audit feedback returns to the agent.">
-</p>
+<a href="dist/assets/figures/figure-2-audit-framework.png"><img align="left" src="dist/assets/figures/figure-2-audit-framework.png" width="340" alt="AgentPrivAudit extracts flows after reads and reviews proposed writes using the accumulated inventory."></a>
 
-1. **After reads:** extract potentially sensitive information flows into an
-   accumulated inventory and provide audit feedback to the executor.
-2. **Before writes:** judge proposed transmissions against the selected policy.
-   **PASS** permits a flow, **ABSTRACT** calls for a less specific rendering,
-   and **BLOCK** prevents that flow. Feedback lets the agent revise the action.
+**After reads**<br>
+Extract potentially sensitive flows into a shared inventory and provide audit feedback.
 
-| Configurable criterion | What does the auditor ask? |
+**Before writes**<br>
+Review proposed transmissions under the selected privacy policy. Feedback lets the agent revise its action.
+
+**PASS** — permit the flow.<br>
+**ABSTRACT** — request less-specific content.<br>
+**BLOCK** — reject the flow.
+
+<br clear="both">
+
+| Criterion | Audit question |
 | --- | --- |
-| PII protection | Does this flow disclose personally identifying information about someone other than the user? |
-| Data minimization | Is this information necessary for the user's task? |
-| Contextual integrity | Is this information appropriate for the recipient and context? |
+| PII | Does this identify someone other than the user? |
+| Data minimization | Is this information necessary for the task? |
+| Contextual integrity | Is sharing appropriate for this recipient and context? |
 
 Raw tool observations still reach the executor unchanged. This is runtime
 auditing, **not a mechanism that hides sensitive context from the model**.
 
 ## Results
 
-> **46.8% → 17.8% leakage**, a **29.0 percentage-point reduction**, with average
-> helpfulness at **2.60 → 2.59 / 3** under contextual-integrity auditing.
+> **46.8% → 17.8% leakage** (−29.0 percentage points), with average helpfulness
+> at 2.60 → 2.59 / 3 under contextual-integrity auditing.
 
 Reported results from [Table 4 of the paper](https://voidreaming.github.io/agentprivarena/assets/agentprivarena.pdf#page=6),
 pooled across five executors. Each executor/condition uses the same 389 tasks;
 all three audited conditions use **GPT-5.4 as the auditor**.
 
-| Condition | Privacy mechanism | Leakage ↓ | Helpfulness ↑ |
-| :--- | :--- | ---: | ---: |
-| C0 | No mitigation | 46.8% | 2.60 |
-| C1 | Privacy-conscious prompt | 43.0% | 2.64 |
-| C2 | AgentPrivAudit · PII | 26.5% | 2.55 |
-| C3 | AgentPrivAudit · Data minimization | 19.7% | 2.59 |
-| **C4** | **AgentPrivAudit · Contextual integrity** | **17.8%** | **2.59** |
+<a href="dist/assets/figures/figure-4-leakage-results.png"><img align="right" src="dist/assets/figures/figure-4-leakage-results.png" width="380" alt="Figure 4. Leakage across five executors under C0 through C4. The range narrows from 25.4 percentage points without mitigation to 3.1 with contextual-integrity auditing."></a>
 
-<p align="center">
-  <img src="dist/assets/figures/figure-4-leakage-results.png" width="650" alt="Leakage across five executors under C0 through C4. The range narrows from 25.4 percentage points without mitigation to 3.1 with contextual-integrity auditing.">
-</p>
+| Condition | Leakage ↓ | Helpfulness ↑ |
+| --- | ---: | ---: |
+| C0 · No mitigation | 46.8% | 2.60 |
+| C1 · Privacy prompt | 43.0% | **2.64** |
+| C2 · PII audit | 26.5% | 2.55 |
+| C3 · Data min. audit | 19.7% | 2.59 |
+| C4 · CI audit | **17.8%** | 2.59 |
 
-*Figure 4. Auditing reduces both leakage and its variation across executors;
-privacy prompting alone leaves a wide spread.*
+<p><sub>Bold marks the best value per metric.<br>
+C2–C4 use AgentPrivAudit; CI = contextual integrity.</sub></p>
+
+<br clear="both">
 
 **Why the mechanism matters.** In the separate criterion ablation, stating the
 same three privacy criteria as instructions yields **40.7%** average leakage;
