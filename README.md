@@ -67,11 +67,11 @@ for implementation and provenance.
 Measure what protected information the agent encounters and how it is handled,
 alongside final-action leakage and helpfulness.
 
-| Metric | Definition |
-| --- | :---: |
-| Exposure rate | $\frac{E}{R}$ |
-| Extraction recall | $\frac{X}{E}$ |
-| Disposition share | $\frac{F_d}{F}$ |
+| Metric | Equation | What it measures |
+| --- | :---: | --- |
+| Exposure rate | $\displaystyle\frac{E}{R}$ | Share of protected items that reach the agent's observations. |
+| Extraction recall | $\displaystyle\frac{X}{E}$ | Share of exposed items captured in the auditor's flow inventory. |
+| Disposition share | $\displaystyle\frac{F_d}{F}$ | Share of extracted flows assigned each decision: PASS, ABSTRACT, or BLOCK. |
 
 Counts are pooled over task executions within a condition: $R$ reference
 protected items, $E$ exposed items, and $X$ exposed items represented by the
@@ -85,7 +85,7 @@ Audit information flows after reads and before writes. Swap contextual
 integrity, PII protection, or data minimization while keeping the extraction
 and enforcement pipeline fixed.
 
-<a href="dist/assets/figures/figure-2-audit-framework.png"><img align="left" src="dist/assets/figures/figure-2-audit-framework.png" width="340" alt="AgentPrivAudit extracts flows after reads and reviews proposed writes using the accumulated inventory."></a>
+<a href="dist/assets/figures/figure-2-audit-framework.png"><img align="left" src="dist/assets/figures/figure-2-audit-framework.png" width="400" alt="AgentPrivAudit extracts flows after reads and reviews proposed writes using the accumulated inventory."></a>
 
 **After reads**<br>
 Extract potentially sensitive flows into a shared inventory and provide audit feedback.
@@ -117,18 +117,18 @@ Reported results from [Table 4 of the paper](https://voidreaming.github.io/agent
 pooled across five executors. Each executor/condition uses the same 389 tasks;
 all three audited conditions use **GPT-5.4 as the auditor**.
 
-<a href="dist/assets/figures/figure-4-leakage-results.png"><img align="right" src="dist/assets/figures/figure-4-leakage-results.png" width="380" alt="Figure 4. Leakage across five executors under C0 through C4. The range narrows from 25.4 percentage points without mitigation to 3.1 with contextual-integrity auditing."></a>
+<a href="dist/assets/figures/figure-4-leakage-results.png"><img align="right" src="dist/assets/figures/figure-4-leakage-results.png" width="420" alt="Figure 4. Leakage across five executors under C0 through C4. The range narrows from 25.4 percentage points without mitigation to 3.1 with contextual-integrity auditing."></a>
 
 | Condition | Leakage ↓ | Helpfulness ↑ |
 | --- | ---: | ---: |
-| C0 · No mitigation | 46.8% | 2.60 |
-| C1 · Privacy prompt | 43.0% | **2.64** |
-| C2 · PII audit | 26.5% | 2.55 |
-| C3 · Data min. audit | 19.7% | 2.59 |
-| C4 · CI audit | **17.8%** | 2.59 |
+| C0 · No<br>mitigation | 46.8% | 2.60 |
+| C1 · Privacy<br>prompt | 43.0% | **2.64** |
+| C2 · PII | 26.5% | 2.55 |
+| C3 · Data<br>minimization | 19.7% | 2.59 |
+| C4 · Contextual<br>integrity | **17.8%** | 2.59 |
 
-<p><sub>Bold marks the best value per metric.<br>
-C2–C4 use AgentPrivAudit; CI = contextual integrity.</sub></p>
+C2–C4 use AgentPrivAudit. Bold marks the best value per metric;
+helpfulness is scored on a 0–3 scale.
 
 <br clear="both">
 
