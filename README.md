@@ -15,10 +15,10 @@
 <p>
   <a href="#what-agentprivarena-contributes">Highlights</a> ·
   <a href="#real-service-environment">Services</a> ·
-  <a href="#agentprivaudit">Method</a> ·
+  <a href="#agentprivaudit-a-modular-runtime-auditor">Method</a> ·
   <a href="#results">Results</a> ·
   <a href="#quick-start">Quick start</a> ·
-  <a href="#documentation-and-code">Documentation</a>
+  <a href="#repository-map">Code &amp; docs</a>
 </p>
 
 </div>
@@ -38,30 +38,11 @@ trajectory: the agent must discover them through its own tool calls.*
 
 ## What AgentPrivArena contributes
 
-- **Executable privacy scenarios.** Convert scenarios into task specifications
-  and seeded application state. Agents interact with BookStack, Mattermost,
-  Rocket.Chat, Mailpit, GoToSocial, and Radicale through real MCP tools in a
-  Docker-based environment.
-- **Privacy across the whole trajectory.** Measure protected-information
-  exposure, extraction recall, and flow dispositions alongside final-action
-  leakage and helpfulness. An agent can access unnecessary sensitive records
-  even when its final action reveals none of them.
-- **A modular runtime auditor.** AgentPrivAudit extracts information flows after
-  reads and reviews proposed writes. Swap contextual integrity, PII protection,
-  or data minimization while holding the extraction and enforcement pipeline
-  fixed.
-- **A controlled multi-model study.** Compare five executors under five
-  conditions on the same 389 executable tasks, adapted from PrivacyLens.
-  Separate ablations test whether the privacy criterion is merely instructed or
-  enforced, and how the auditor model affects protection.
+### Real service environment
 
-## Real service environment
-
-**Real applications, real state, real tool calls.** All six services are
-unmodified open-source applications, self-hosted in containers. Each task seeds
-synthetic records into application state; MCP wrappers expose the services'
-native APIs so the agent discovers records and commits actions through actual
-services, rather than replaying a prewritten trajectory.
+Run privacy-sensitive tasks against six self-hosted applications through real
+MCP tools. Synthetic records are seeded into service state, so agents discover
+information and act on live applications.
 
 | Service | Application function | Version used in the paper | Example MCP tools |
 | --- | --- | :---: | --- |
@@ -76,19 +57,28 @@ Together, these services expose **28 MCP tools: 13 discovery, 8 access, and
 7 write tools**. These classes describe tool intent, not a privacy boundary:
 search results can themselves contain sensitive record content.
 
-Versions are the experimental versions reported in
-[Table 2 of the paper](https://voidreaming.github.io/agentprivarena/assets/agentprivarena.pdf#page=3),
-not claims about current releases. The
-[Docker Compose configuration](agentprivarena/docker-compose.yml) pins all six
-application images by **full SHA-256 digest**; Appendix B records their
-provenance. See the [MCP adapters](agentprivarena/mcp_servers/) for the executable
-tool interfaces and [Appendix A](https://voidreaming.github.io/agentprivarena/assets/agentprivarena.pdf#page=12)
-for the complete tool inventory.
+Versions come from [Table 2 of the paper](https://voidreaming.github.io/agentprivarena/assets/agentprivarena.pdf#page=3).
+[Docker Compose](agentprivarena/docker-compose.yml) pins all six images by
+**full SHA-256 digest**. See the [MCP adapters](agentprivarena/mcp_servers/) and
+[tool inventory](https://voidreaming.github.io/agentprivarena/assets/agentprivarena.pdf#page=12)
+for implementation and provenance.
 
-## AgentPrivAudit
+### Trajectory-level privacy evaluation
 
-AgentPrivAudit makes information flow explicit: **who sends what, about whom,
-to which recipient, and under what sharing conditions**.
+Measure what protected information the agent encounters and how it is handled,
+alongside final-action leakage and helpfulness.
+
+| Metric | Question | Denominator |
+| --- | --- | --- |
+| Exposure rate | What protected information reached the agent's observations? | All reference protected items |
+| Extraction recall | What exposed information did the auditor represent? | Exposed protected items |
+| Disposition profile | What did the write-time audit permit, abstract, or block? | Extracted flows |
+
+### AgentPrivAudit: a modular runtime auditor
+
+Audit information flows after reads and before writes. Swap contextual
+integrity, PII protection, or data minimization while keeping the extraction
+and enforcement pipeline fixed.
 
 <p align="center">
   <img src="dist/assets/figures/figure-2-audit-framework.png" width="620" alt="AgentPrivAudit attaches after read observations and before outbound writes. A shared flow inventory informs write decisions, and audit feedback returns to the agent.">
@@ -145,12 +135,6 @@ a privacy principle is not equivalent to checking information flows at runtime.
   <img src="dist/assets/figures/figure-3-trajectory-metrics.png" width="100%" alt="Exposure, extraction recall, and pass/abstract/block dispositions are measured separately because they count protected items, exposed items, and extracted flows respectively.">
 </p>
 
-| Metric | Question | Denominator |
-| --- | --- | --- |
-| Exposure rate | What protected information reached the agent's observations? | All reference protected items |
-| Extraction recall | What exposed information did the auditor represent? | Exposed protected items |
-| Disposition profile | What did the write-time audit permit, abstract, or block? | Extracted flows |
-
 Under contextual integrity, extraction recall is **70.5%**: the inventory misses
 29.5% of exposed protected items. Among extracted flows, **38% pass, 52% are
 abstracted, and 10% are blocked**. These diagnostics locate failure points that
@@ -203,7 +187,56 @@ trajectories/results, human-evaluation responses, and private research notes are
 not included. Benchmark inputs require separate acquisition and preparation;
 this is not a bundled dataset release.
 
-## Documentation and code
+## Repository map
+
+**`agentprivarena/` runs and evaluates experiments; `packages/` supplies the
+agent runtime and reusable AgentPrivAudit implementation.**
+
+```text
+.
+├── agentprivarena/                      Research environment and evaluation
+│   ├── cli.py                          setup / generate / run / evaluate commands
+│   ├── config.py                       Service, model, and path settings
+│   ├── bootstrap.py                    Service provisioning and local tokens
+│   ├── docker-compose.yml              Applications, databases, and MCP servers
+│   ├── tasks/                          Scenario conversion and readiness checks
+│   ├── mcp_servers/                    Service-specific MCP tools
+│   ├── runner/                         Task execution, prompts, and trace collection
+│   ├── base/                           Service seeding, evaluators, and statistics
+│   ├── benchmarks/                     Optional benchmark adapters
+│   ├── tests/                          Research-module tests
+│   └── docs/                           Reproduction and release guides
+├── packages/                           Reusable agent infrastructure
+│   ├── sdk/openhands/sdk/
+│   │   ├── privacy/                    AgentPrivAudit flows, policies, and decisions
+│   │   └── agent/tool_audit.py          Agent-loop audit extension points
+│   ├── tools/                          Built-in agent tools
+│   ├── workspace/                      Container and remote workspace backends
+│   └── agent-server/openhands/agent_server/
+│       ├── api.py                      Container-side execution API
+│       └── docker/                     Agent image Dockerfile and build helpers
+├── tests/                              Runtime and release regression tests
+├── examples/                           SDK usage examples
+├── scripts/                            Development checks and public source export
+├── docs/                               SDK and website documentation
+├── dist/                               Project website, paper, and original figures
+├── public-release.toml                 Public source-export allowlist
+├── pyproject.toml                      Workspace, dependencies, and test settings
+└── uv.lock                             Locked dependency versions
+```
+
+| To understand… | Start with… |
+| --- | --- |
+| How a task is seeded, executed, and recorded | [agent_runner.py](agentprivarena/runner/agent_runner.py) |
+| How AgentPrivAudit controls read/write boundaries | [audit.py](packages/sdk/openhands/sdk/privacy/audit.py) |
+| How flows are extracted and privacy criteria applied | [llm_analyzer.py](packages/sdk/openhands/sdk/privacy/llm_analyzer.py) |
+| How leakage and helpfulness are scored | [evaluator.py](agentprivarena/base/evaluator.py) |
+
+The SDK's Python namespace remains `openhands.*`. The optional MPCI-Bench
+adapter and additional experimental variants are outside the main 389-task
+comparison.
+
+## Documentation
 
 | Start here | What you will find |
 | --- | --- |
@@ -212,32 +245,6 @@ this is not a bundled dataset release.
 | [Development guide](DEVELOPMENT.md) | Environment setup, testing, and contribution workflow |
 | [Public release policy](agentprivarena/docs/public-release.md) | Private-data boundaries and allowlisted source exports |
 | [SDK reference](docs/openhands-sdk.md) | Underlying agent APIs and usage examples |
-
-<details>
-<summary><b>Repository map</b></summary>
-
-```text
-agentprivarena/           Research CLI, configuration, and service deployment
-├── tasks/               Task conversion and readiness checks
-├── mcp_servers/         Live application adapters
-├── runner/              Agent execution and trajectory collection
-├── base/                Outcome/trajectory evaluation and aggregation
-└── docs/                Reproduction and release guides
-packages/               Customized agent infrastructure
-├── sdk/                 Agent runtime and AgentPrivAudit in openhands.sdk.privacy
-├── tools/               Built-in tools
-├── workspace/           Local and container workspaces
-└── agent-server/        Container-side runtime
-tests/                  SDK and release regression tests
-dist/                   Project website, manuscript, and original paper figures
-```
-
-Research-module tests also live in `agentprivarena/tests/`. The repository
-includes the full customized SDK; its public Python namespace remains
-`openhands.*`. The optional MPCI-Bench adapter and additional experimental
-variants are not part of the main 389-task comparison.
-
-</details>
 
 ## Citation and acknowledgments
 
