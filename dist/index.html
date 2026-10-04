@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="AgentPrivArena evaluates privacy throughout live AI-agent workflows. AgentPrivAudit inventories information after reads and audits outbound writes.">
+  <title>AgentPrivArena: Evaluating and Auditing Real-world AI Agent Privacy</title>
+  <link rel="canonical" href="https://voidreaming.github.io/agentprivarena/">
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/mpci.css">
+  <link rel="stylesheet" href="./static/css/arena.css">
+  <link rel="icon" href="data:,">
+  <script src="./static/js/mpci.js" defer></script>
+  <script src="./static/js/research-nav.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#intro">Skip to content</a>
+<nav class="research-nav" aria-label="Research projects">
+  <a class="research-home" href="https://shouju-wang.github.io/" aria-label="Shouju Wang’s homepage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m3 11 9-8 9 8M5 10v11h5v-7h4v7h5V10"/></svg></a>
+  <details class="research-switcher"><summary>More Research</summary><div class="research-menu">
+    <a href="https://voidreaming.github.io/mpci-bench/">MPCI-Bench</a>
+    <a href="https://voidreaming.github.io/agentprivarena/" aria-current="page">AgentPrivArena</a>
+  </div></details>
+</nav>
+<section class="hero" aria-label="Paper information"><div class="hero-body"><div class="container is-max-desktop"><div class="columns is-centered"><div class="column has-text-centered">
+  <h1 class="title is-1 publication-title"><b>AgentPrivArena:</b> Evaluating and Auditing Real-world AI Agent Privacy</h1>
+  <div class="is-size-5 publication-authors"><span class="author-block"><a href="https://shouju-wang.github.io/">Shouju Wang</a>,</span> <span class="author-block"><a href="https://hpzhang94.github.io/">Haopeng Zhang</a></span></div>
+  <div class="is-size-5 publication-authors"><span class="author-block">University of North Carolina at Charlotte</span></div>
+  <p class="publication-venue">Research preprint</p>
+  <div class="publication-links">
+    <span class="link-block"><a class="button is-normal is-rounded is-dark" href="./assets/agentprivarena.pdf"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 3H5v18h14V8zM14 3v6h5M8 13h8M8 17h6"/></svg></span><span>Paper</span></a></span>
+    <span class="link-block"><a class="button is-normal is-rounded is-dark" href="https://openreview.net/forum?id=zxllNfqsYS">OpenReview</a></span>
+    <span class="link-block"><button class="button is-normal is-rounded is-dark pending-resource" type="button" disabled>Code <span>Coming soon</span></button></span>
+    <span class="link-block"><button class="button is-normal is-rounded is-dark pending-resource" type="button" disabled>Dataset <span>Coming soon</span></button></span>
+  </div>
+</div></div></div></div></section>
+<nav class="sidebar-nav" aria-label="On this page"><div class="nav-title">Overview</div><ul>
+  <li><a href="#intro">The question</a></li><li><a href="#environment">Live environment</a></li><li><a href="#audit">Runtime auditing</a></li><li><a href="#results">Privacy &amp; helpfulness</a></li><li><a href="#trajectory">Inside the trajectory</a></li><li><a href="#resources">Resources</a></li><li><a href="#BibTeX">BibTeX</a></li>
+</ul></nav>
+<main>
+<section class="section" id="intro"><div class="container is-max-desktop content">
+  <h2 class="title is-3">A safe final answer can hide unnecessary access.</h2>
+  <p>An assistant may write a careful message after reading far more private information than its task required. If we evaluate only the final message, that extra access stays invisible. <b>AgentPrivArena follows the whole execution:</b> what the agent searches, what it reads, what enters its context, and what it eventually sends.</p>
+  <p>The framework turns privacy scenarios into executable tasks on working applications with synthetic records. <b>AgentPrivAudit</b> adds runtime auditing: it builds an inventory of information after reads, then reviews proposed outbound writes before they execute.</p>
+  <p class="benchmark-facts"><b>389 executable tasks</b> · <b>6 services</b> · <b>28 MCP tools</b> · <b>5 executor models</b></p>
+  <figure class="paper-figure "><a href="./assets/figures/figure-1-overview.png" class="figure-link" aria-label="Enlarge Figure 1"><img loading="lazy" src="./assets/figures/figure-1-overview.png" width="1925" height="945" alt="AgentPrivArena converts source scenarios into seeded services exposed through MCP. The agent reads records, accumulates both task-relevant and protected content, then executes an action."></a><figcaption>From seeded records to live tool use and a committed action. Useful and sensitive information can arrive together in a single read. <a href="./assets/agentprivarena.pdf#page=3">Figure 1</a> · <a href="./assets/figures/figure-1-overview.png">Full-size image</a>.</figcaption></figure>
+</div></section>
+<section class="section" id="environment"><div class="container is-max-desktop">
+  <h2 class="title is-3">Run the task on working software.</h2>
+  <div class="content section-intro"><p>Instead of handing the agent a completed tool history, AgentPrivArena gives it a task and lets it interact with services through <b>Model Context Protocol (MCP)</b> tools. Emails, messages, pages, and calendar events exist as application state; the agent has to discover and read them.</p><p>Tasks run in an isolated Docker environment built around OpenHands. The services are reset and seeded for each task, and the resulting tool calls and observations are recorded. <b>The software is real; all personal records are synthetic.</b></p></div>
+  <div class="service-grid"><div><b>Knowledge base</b><span>BookStack</span></div><div><b>Direct messaging</b><span>Mattermost</span></div><div><b>Team chat</b><span>Rocket.Chat</span></div><div><b>Email</b><span>Mailpit</span></div><div><b>Social media</b><span>GoToSocial</span></div><div><b>Calendar scheduling</b><span>Radicale</span></div></div>
+  <p class="note">389 of 493 PrivacyLens scenarios can be instantiated with the supported services. The 104 exclusions reflect service and record-mapping constraints.</p>
+</div></section>
+<section class="section" id="audit"><div class="container is-max-desktop">
+  <h2 class="title is-3">Audit what is read, then govern what is sent.</h2>
+  <div class="content section-intro"><p>AgentPrivAudit separates two jobs: understanding the information accumulated during execution, and deciding whether a proposed transmission is appropriate. The inventory records the sender, recipient, person concerned, information type, and conditions for sharing.</p></div>
+  <div class="audit-layout">
+    <figure class="paper-figure "><a href="./assets/figures/figure-2-audit-framework.png" class="figure-link" aria-label="Enlarge Figure 2"><img loading="lazy" src="./assets/figures/figure-2-audit-framework.png" width="1030" height="865" alt="AgentPrivAudit extracts information flows after read observations and judges proposed outbound writes using the accumulated inventory. Audit feedback re-enters the agent context."></a><figcaption>The execution path and the audit interact at the read and write boundaries. <a href="./assets/agentprivarena.pdf#page=5">Figure 2</a> · <a href="./assets/figures/figure-2-audit-framework.png">Full-size image</a>.</figcaption></figure>
+    <div class="content audit-steps">
+      <h3 class="title is-5">1. After reads: extract information flows</h3><p>The extractor updates the inventory from tool observations and may advise the agent before its next step. Requested records reach the agent unchanged; this stage <b>does not block or redact reads</b>.</p>
+      <h3 class="title is-5">2. Before writes: review the proposed flow</h3><p>The arbiter evaluates outgoing information against the inventory and a chosen privacy criterion.</p>
+      <dl class="audit-decisions"><dt>PASS</dt><dd>Permit the proposed transmission.</dd><dt>ABSTRACT</dt><dd>Replace specific details with a generalized description.</dd><dt>BLOCK</dt><dd>Prevent the information flow.</dd></dl>
+    </div>
+  </div>
+  <div class="content"><h3 class="title is-5">One auditing mechanism, three privacy criteria</h3><p>The pipeline stays fixed while the decision rule changes, so the comparison isolates what each privacy criterion contributes.</p></div>
+  <div class="construction-tiers policy-grid"><p><b>Personal identifiers</b><span>Does the fact reveal personally identifying information about someone other than the user?</span></p><p><b>Data minimization</b><span>Is this information necessary to complete the task?</span></p><p><b>Contextual integrity</b><span>Is sharing appropriate for this person, recipient, channel, and purpose?</span></p></div>
+</div></section>
+<section class="section" id="results"><div class="container is-max-desktop">
+  <h2 class="title is-3">Less leakage, with similar helpfulness.</h2>
+  <div class="content section-intro"><p>Across the five executors, contextual-integrity auditing reduces the pooled leak rate from <b>46.8% to 17.8%</b>, while average helpfulness changes from <b>2.60 to 2.59</b> on a 0–3 scale. It achieves the lowest leakage for every tested executor.</p><p>Leakage measures whether a committed action discloses at least one protected reference item. Helpfulness measures how well that action fulfils the request. The main experiments use GPT-5.4 as the auditor; three separate LLM judges score the outcomes, with majority agreement used for leakage.</p></div>
+  <div class="results-grid">
+    <figure class="paper-figure performance-figure"><a href="./assets/figures/figure-4-leakage-results.png" class="figure-link" aria-label="Enlarge Figure 4"><img loading="lazy" src="./assets/figures/figure-4-leakage-results.png" width="1120" height="780" alt="Across five executors, leakage spans 25.4 percentage points without mitigation and 26.8 points with a privacy prompt, narrowing to 8.0 with PII auditing, 4.0 with data minimization, and 3.1 with contextual integrity."></a><figcaption>Each point is an executor; the range shows how much leakage varies across the five models. <a href="./assets/agentprivarena.pdf#page=7">Figure 4</a> · <a href="./assets/figures/figure-4-leakage-results.png">Full-size image</a>.</figcaption></figure>
+    <div class="results-table-panel"><h3 class="title is-5">Pooled results</h3><p class="note">Same 389 tasks per condition and executor.</p><div class="table-container" tabindex="0" role="region" aria-label="Pooled outcome results">
+      <table class="paper-table pooled-table"><thead><tr><th scope="col">Condition</th><th scope="col">Leakage<br>% ↓</th><th scope="col">Help&shy;fulness<br>0–3 ↑</th></tr></thead><tbody><tr><th scope="row"><span class="condition-code">C0</span> No mitigation</th><td>46.8</td><td>2.60</td></tr>
+<tr><th scope="row"><span class="condition-code">C1</span> Privacy prompt</th><td>43.0</td><td>2.64</td></tr>
+<tr><th scope="row"><span class="condition-code">C2</span> PII audit</th><td>26.5</td><td>2.55</td></tr>
+<tr><th scope="row"><span class="condition-code">C3</span> Data minimization audit</th><td>19.7</td><td>2.59</td></tr>
+<tr class=highlight-row><th scope="row"><span class="condition-code">C4</span> Contextual integrity audit</th><td>17.8</td><td>2.59</td></tr></tbody><caption><a href="./assets/agentprivarena.pdf#page=6">Table 4</a>. C2–C4 use the same audit with different criteria. ↓ lower is better; ↑ higher is better.</caption></table>
+    </div></div>
+  </div>
+  <details class="paper-details"><summary>All model results and exact values</summary><p class="note">C0: no mitigation · C1: privacy prompt · C2: PII audit · C3: data minimization audit · C4: contextual integrity audit. Scroll horizontally for all columns on small screens.</p><div class="table-container" tabindex="0" role="region" aria-label="All outcome results; scroll horizontally for leakage and helpfulness columns"><table class="paper-table full-results"><thead><tr><th scope="col" rowspan="2">Executor</th><th scope="colgroup" colspan="5">Leak rate (%) ↓</th><th scope="colgroup" colspan="5">Helpfulness (0–3) ↑</th></tr><tr><th scope="col">C0</th><th scope="col">C1</th><th scope="col">C2</th><th scope="col">C3</th><th scope="col">C4</th><th scope="col">C0</th><th scope="col">C1</th><th scope="col">C2</th><th scope="col">C3</th><th scope="col">C4</th></tr></thead><tbody><tr><th scope="row">GPT-5.4</th><td>33.4</td><td>27.1</td><td>23.7</td><td>20.5</td><td>17.3</td><td>2.68</td><td>2.67</td><td>2.66</td><td>2.65</td><td>2.64</td></tr>
+<tr><th scope="row">DeepSeek-V4-Pro</th><td>58.8</td><td>53.9</td><td>31.4</td><td>22.4</td><td>19.3</td><td>2.58</td><td>2.67</td><td>2.57</td><td>2.58</td><td>2.64</td></tr>
+<tr><th scope="row">Kimi-K2.6</th><td>54.8</td><td>52.1</td><td>28.8</td><td>18.5</td><td>18.1</td><td>2.61</td><td>2.66</td><td>2.54</td><td>2.63</td><td>2.61</td></tr>
+<tr><th scope="row">Mistral-Large-3</th><td>46.5</td><td>44.5</td><td>25.1</td><td>18.6</td><td>16.2</td><td>2.54</td><td>2.61</td><td>2.55</td><td>2.55</td><td>2.59</td></tr>
+<tr><th scope="row">Gemini-Flash-2.5</th><td>40.3</td><td>37.6</td><td>23.5</td><td>18.7</td><td>18.1</td><td>2.56</td><td>2.59</td><td>2.43</td><td>2.51</td><td>2.48</td></tr>
+<tr><th scope="row">Avg</th><td>46.8</td><td>43.0</td><td>26.5</td><td>19.7</td><td>17.8</td><td>2.60</td><td>2.64</td><td>2.55</td><td>2.59</td><td>2.59</td></tr></tbody><caption>Table 4, including the reported pooled average. <a href="./static/data/results.json" download>Download result data</a>.</caption></table></div></details>
+  <details class="paper-details"><summary>Prompting versus enforcement, and the auditor’s role</summary><div class="content"><p>The ablations compare stating a privacy criterion in the prompt with enforcing it at runtime, then vary the auditor while holding the criterion and boundaries fixed. These experiments test how the criterion is delivered and which model performs the audit.</p></div><div class="results-grid"><figure class="paper-figure "><a href="./assets/figures/figure-5-criterion-ablation.png" class="figure-link" aria-label="Enlarge Figure 5"><img loading="lazy" src="./assets/figures/figure-5-criterion-ablation.png" width="1120" height="925" alt="Privacy criteria have larger effects when enforced by runtime auditing than when stated in the prompt. Average leakage is 40.7% for instructions and 21.7% for enforcement."></a><figcaption>A criterion stated in the prompt versus enforced by the audit. <a href="./assets/agentprivarena.pdf#page=8">Figure 5</a> · <a href="./assets/figures/figure-5-criterion-ablation.png">Full-size image</a>.</figcaption></figure><figure class="paper-figure "><a href="./assets/figures/figure-6-auditor-ablation.png" class="figure-link" aria-label="Enlarge Figure 6"><img loading="lazy" src="./assets/figures/figure-6-auditor-ablation.png" width="1130" height="895" alt="GPT-5.4 and Grok executors have widely separated leakage without auditing, but approach similar leakage when governed by the same auditor."></a><figcaption>Two executors under different auditors, with the criterion and audit boundaries fixed. <a href="./assets/agentprivarena.pdf#page=8">Figure 6</a> · <a href="./assets/figures/figure-6-auditor-ablation.png">Full-size image</a>.</figcaption></figure></div></details>
+</div></section>
+<section class="section" id="trajectory"><div class="container is-max-desktop">
+  <h2 class="title is-3">Where does the remaining risk come from?</h2>
+  <div class="content section-intro"><p>The benchmark tracks <b>1,175 protected reference items</b> through the execution. Without mitigation, 79.2% of those items enter the agent’s context in a tool observation. That is an item-level exposure measure, distinct from the task-level leak rate.</p></div>
+  <div class="construction-tiers metric-tiers"><p><b>1. Exposure</b><span>Of all protected reference items, how many reached the agent’s context?</span></p><p><b>2. Extraction recall</b><span>Of the exposed items, how many did the auditor represent as information flows?</span></p><p><b>3. Disposition</b><span>Of the extracted flows, how many were passed, abstracted, or blocked?</span></p></div>
+  <p class="note mobile-figure-hint">Scroll the figure horizontally to compare all three panels.</p>
+  <figure class="paper-figure wide-figure"><div class="figure-scroll" tabindex="0" role="region" aria-label="Trajectory metrics figure; scroll horizontally to compare all panels"><a href="./assets/figures/figure-3-trajectory-metrics.png" class="figure-link" aria-label="Enlarge Figure 3"><img loading="lazy" src="./assets/figures/figure-3-trajectory-metrics.png" width="2300" height="685" alt="Three panels separately report exposure rate over protected items, extraction recall over exposed items, and pass/abstract/block decisions over extracted flows for audited conditions."></a></div><figcaption>The three panels use different denominators. Exposure, extraction, and write decisions identify different failure points. <a href="./assets/agentprivarena.pdf#page=6">Figure 3</a> · <a href="./assets/figures/figure-3-trajectory-metrics.png">Full-size image</a>.</figcaption></figure>
+  <div class="content"><p>Under contextual-integrity auditing, the extractor captures <b>70.5% of exposed protected items</b>. The remaining 29.5% are absent from its inventory, so the write-stage arbiter cannot assess them through those extracted flows. Better extraction is therefore a central direction for reducing the residual leakage.</p><h3 class="title is-5">What these results do—and do not—establish</h3><p>The best configuration still leaks on 16.2–19.3% of tasks across models, and repeated abstraction can remove useful content. Results are judged by LLMs; human validation is not yet complete. The evaluation covers one user, one agent, and predominantly text-based tasks in the supported environment.</p></div>
+</div></section>
+<section class="section" id="resources"><div class="container is-max-desktop content">
+  <h2 class="title is-3">Resources</h2>
+  <p>Read the full manuscript for the task conversion, evaluation rubrics, ablations, and failure analysis. Code and dataset links will be added here.</p>
+  <p><a href="./assets/agentprivarena.pdf">Paper PDF</a> · <a href="https://openreview.net/forum?id=zxllNfqsYS">OpenReview</a> · <a href="./static/data/results.json" download>Result data</a></p>
+  <p>Related work: <a href="https://voidreaming.github.io/mpci-bench/">MPCI-Bench</a> studies appropriate and inappropriate image sharing through paired multimodal scenarios.</p>
+</div></section>
+<section class="section" id="BibTeX"><div class="container is-max-desktop content"><div class="citation-heading"><h2 class="title is-3">BibTeX</h2><button class="button is-small" id="copy-citation" type="button">Copy BibTeX</button></div><pre><code id="bibtex">@misc{wang2026agentprivarena,
+  title={AgentPrivArena: Evaluating and Auditing Real-world AI Agent Privacy},
+  author={Shouju Wang and Haopeng Zhang},
+  year={2026},
+  howpublished={Research manuscript},
+  url={https://openreview.net/forum?id=zxllNfqsYS}
+}</code></pre><p id="copy-status" role="status"></p></div></section>
+</main>
+<dialog class="lightbox" id="figure-dialog" aria-label="Expanded paper figure"><button type="button" id="close-figure" autofocus>Close ×</button><img id="expanded-figure" alt=""></dialog>
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered"><div class="column is-8"><div class="content">
+      <p>This website is adapted from <a href="https://privasis.github.io/">Privasis</a> and <a href="https://nerfies.github.io/">Nerfies</a>. The adapted website template is licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0</a>; upstream MIT notices are preserved in the <a href="https://github.com/voidreaming/agentprivarena">website source</a>.</p>
+    </div></div></div>
+  </div>
+</footer>
+</body>
+</html>

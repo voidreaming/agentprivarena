@@ -1,0 +1,42 @@
+/* Page-specific layout; typography and controls match MPCI-Bench. */
+.pending-resource span { margin-left: 0.55rem; font-size: 0.72em; }
+.publication-links .pending-resource[disabled] { opacity: 1; background: #f1f1f1; color: #717171; border-color: #e1e1e1; }
+.service-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1.25rem 2rem; margin: 1.5rem 0; padding: 1.25rem 0; border-block: 1px solid #e4e4e4; }
+.service-grid b, .service-grid span { display: block; }
+.service-grid span { margin-top: 0.25rem; color: #666; }
+.audit-layout { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 2rem; align-items: center; margin-bottom: 2rem; }
+.audit-layout .paper-figure { margin: 0; }
+.audit-steps .title { margin-top: 0; }
+.audit-steps h3:not(:first-child) { margin-top: 1.5rem; }
+.audit-decisions { display: grid; grid-template-columns: max-content minmax(0,1fr); column-gap: 1rem; row-gap: 0.6rem; font-size: 0.95rem; }
+.audit-decisions dt { font-weight: 700; color: #365c78; }
+.audit-decisions dd { margin: 0; }
+.policy-grid, .metric-tiers { margin-top: 1.25rem; }
+.pooled-table { font-size: 0.9rem; }
+.pooled-table th, .pooled-table td { padding: 0.75rem 0.5rem; white-space: normal; }
+.pooled-table th:first-child { width: 53%; }
+.pooled-table caption { font-size: 0.85rem; line-height: 1.5; text-align: left; }
+.condition-code { color: #666; font-weight: 400; margin-right: 0.25rem; }
+.paper-table .highlight-row { background: #f0f6f9; font-weight: 700; }
+.full-results { font-size: 0.875rem; }
+.full-results th, .full-results td { padding: 0.55rem; }
+.figure-scroll { overflow-x: auto; }
+.wide-figure .figure-scroll .figure-link { min-width: 48rem; }
+.wide-figure figcaption { text-align: left; font-size: 0.9rem; }
+.mobile-figure-hint { display: none; }
+@media (max-width: 768px) {
+  .audit-layout { grid-template-columns: minmax(0,1fr); gap: 1.5rem; }
+  .service-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1rem; }
+  .policy-grid, .metric-tiers { grid-template-columns: minmax(0,1fr); gap: 1rem; }
+  .policy-grid b, .policy-grid span, .metric-tiers b, .metric-tiers span { display: block; }
+  .mobile-figure-hint { display: block; }
+  .pooled-table { font-size: 0.85rem; }
+  .pooled-table th, .pooled-table td { padding: 0.65rem 0.3rem; }
+  .condition-code { display: block; }
+}
+
+@media (max-width: 380px) {
+  .pooled-table { table-layout: fixed; }
+  .pooled-table th:first-child { width: 45%; }
+  .pooled-table th:not(:first-child) { width: 27.5%; }
+}

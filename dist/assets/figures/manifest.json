@@ -1,0 +1,186 @@
+{
+  "source": {
+    "file": "../agentprivarena.pdf",
+    "sha256": "882ca6c6133dc3c81af177fd22b16dc172b7615a3aa14d799bc8b62852d3c877",
+    "title": "AgentPrivArena: Evaluating and Auditing Real-world AI Agent Privacy",
+    "submission_status": "Anonymous ACL submission (as shown in the supplied PDF)",
+    "page_count": 15
+  },
+  "extraction": {
+    "method": "PyMuPDF clipped rendering; source artwork unchanged; no generative editing",
+    "page_numbers": "One-based PDF page indices; match printed page numbers",
+    "crop_units": "PDF points, [x0,y0,x1,y1], origin at top left",
+    "png_render_scale": 5,
+    "svg_text": "Original text converted to paths for consistent rendering"
+  },
+  "figures": [
+    {
+      "id": "figure-1-overview",
+      "figure": 1,
+      "page": 3,
+      "crop": [
+        105,
+        71,
+        490,
+        260
+      ],
+      "role": "Main overview / hero figure",
+      "caption": "AgentPrivArena. Left: each source scenario is converted into a task specification plus per-service seed files, so the records it describes exist as service state rather than as text in a prompt. Centre: the seeded services expose their native APIs through MCP servers, and the sensitive records sit inside them, reachable only by the agent’s own reads. Right: the agent plans, calls tools and accumulates observations until it commits a final action. The highlighted observation is the reason a single-step evaluation is not enough: task-relevant content (green) and protected content (red) arrive together in one read and persist in context from then on.",
+      "alt": "AgentPrivArena converts source scenarios into seeded services exposed through MCP. The agent reads records, accumulates both task-relevant and protected content, then executes an action.",
+      "png_dimensions": [
+        1925,
+        945
+      ],
+      "svg_viewbox": [
+        0,
+        0,
+        385.0,
+        189.0
+      ],
+      "caption_note": "Original caption, PDF line wrapping and discretionary hyphenation normalized.",
+      "files": {
+        "png": "figure-1-overview.png"
+      }
+    },
+    {
+      "id": "figure-2-audit-framework",
+      "figure": 2,
+      "page": 5,
+      "crop": [
+        67,
+        76,
+        273,
+        249
+      ],
+      "role": "Method / runtime audit explanation",
+      "caption": "AGENTPRIVAUDIT attaches at two boundaries, and the vertical spines separate what executes from what audits. Dashed edges carry audit information; solid edges are the execution path.",
+      "alt": "AgentPrivAudit extracts information flows after read observations and judges proposed outbound writes using the accumulated inventory. Audit feedback re-enters the agent context.",
+      "png_dimensions": [
+        1030,
+        865
+      ],
+      "svg_viewbox": [
+        0,
+        0,
+        206.0,
+        173.0
+      ],
+      "caption_note": "Original caption, PDF line wrapping and discretionary hyphenation normalized.",
+      "files": {
+        "png": "figure-2-audit-framework.png"
+      }
+    },
+    {
+      "id": "figure-3-trajectory-metrics",
+      "figure": 3,
+      "page": 6,
+      "crop": [
+        68,
+        237,
+        528,
+        374
+      ],
+      "role": "Evaluation / trajectory metrics",
+      "caption": "The three trajectory-level privacy metrics, audited conditions. (a) Exposure rate, over all reference protected items. (b) Extraction recall, over the exposed ones: what the read boundary represented as a flow given that the agent had seen it. (c) Disposition profile, over extracted flows; only segments above 8% carry a label, so PII’s 1.2% BLOCK share is unlabelled.",
+      "alt": "Three panels separately report exposure rate over protected items, extraction recall over exposed items, and pass/abstract/block decisions over extracted flows for audited conditions.",
+      "png_dimensions": [
+        2300,
+        685
+      ],
+      "svg_viewbox": [
+        0,
+        0,
+        460.0,
+        137.0
+      ],
+      "caption_note": "Original caption, PDF line wrapping and discretionary hyphenation normalized.",
+      "files": {
+        "png": "figure-3-trajectory-metrics.png"
+      }
+    },
+    {
+      "id": "figure-4-leakage-results",
+      "figure": 4,
+      "page": 7,
+      "crop": [
+        68,
+        67,
+        292,
+        223
+      ],
+      "role": "Main results beside outcome table",
+      "caption": "Leak rate per executor, by condition (codes as in Table 4). Each rule spans the five executors and the right-hand column gives its width in percentage points. Prompting leaves the spread where it found it; enforcement collapses it.",
+      "alt": "Across five executors, leakage spans 25.4 percentage points without mitigation and 26.8 points with a privacy prompt, narrowing to 8.0 with PII auditing, 4.0 with data minimization, and 3.1 with contextual integrity.",
+      "png_dimensions": [
+        1120,
+        780
+      ],
+      "svg_viewbox": [
+        0,
+        0,
+        224.0,
+        156.0
+      ],
+      "caption_note": "Original caption, PDF line wrapping and discretionary hyphenation normalized.",
+      "files": {
+        "png": "figure-4-leakage-results.png"
+      }
+    },
+    {
+      "id": "figure-5-criterion-ablation",
+      "figure": 5,
+      "page": 8,
+      "crop": [
+        67,
+        69,
+        291,
+        254
+      ],
+      "role": "Optional ablation / instruction versus enforcement",
+      "caption": "The same three criteria, stated as an instruction and enforced by the mechanism.",
+      "alt": "Privacy criteria have larger effects when enforced by runtime auditing than when stated in the prompt. Average leakage is 40.7% for instructions and 21.7% for enforcement.",
+      "png_dimensions": [
+        1120,
+        925
+      ],
+      "svg_viewbox": [
+        0,
+        0,
+        224.0,
+        185.0
+      ],
+      "caption_note": "Original caption, PDF line wrapping and discretionary hyphenation normalized.",
+      "files": {
+        "png": "figure-5-criterion-ablation.png"
+      }
+    },
+    {
+      "id": "figure-6-auditor-ablation",
+      "figure": 6,
+      "page": 8,
+      "crop": [
+        302,
+        70,
+        528,
+        249
+      ],
+      "role": "Optional ablation / auditor versus executor",
+      "caption": "Two executors, four arms, criterion and boundaries fixed. Along a line is the auditor’s effect, between the lines the executor’s. Paired, the auditor swap gives −6.2 and −10.1pp (p < 10⁻²), the executor swap ±1.8pp (p > 0.3). n=389.",
+      "alt": "GPT-5.4 and Grok executors have widely separated leakage without auditing, but approach similar leakage when governed by the same auditor.",
+      "png_dimensions": [
+        1130,
+        895
+      ],
+      "svg_viewbox": [
+        0,
+        0,
+        226.0,
+        179.0
+      ],
+      "caption_note": "Original caption, PDF line wrapping and discretionary hyphenation normalized.",
+      "files": {
+        "png": "figure-6-auditor-ablation.png"
+      }
+    }
+  ]
+}

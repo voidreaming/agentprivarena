@@ -1,0 +1,160 @@
+{
+  "source": {
+    "paper": "AgentPrivArena: Evaluating and Auditing Real-world AI Agent Privacy",
+    "table": 4,
+    "page": 6,
+    "pdf": "../../assets/agentprivarena.pdf",
+    "sha256": "882ca6c6133dc3c81af177fd22b16dc172b7615a3aa14d799bc8b62852d3c877"
+  },
+  "tasksPerCell": 389,
+  "conditions": [
+    {
+      "id": "C0",
+      "name": "No mitigation",
+      "audit": false
+    },
+    {
+      "id": "C1",
+      "name": "Privacy prompt",
+      "audit": false
+    },
+    {
+      "id": "C2",
+      "name": "PII audit",
+      "audit": true,
+      "criterion": "Personally identifiable information"
+    },
+    {
+      "id": "C3",
+      "name": "Data minimization audit",
+      "audit": true,
+      "criterion": "Task necessity"
+    },
+    {
+      "id": "C4",
+      "name": "Contextual integrity audit",
+      "audit": true,
+      "criterion": "Audience appropriateness"
+    }
+  ],
+  "rows": [
+    {
+      "model": "GPT-5.4",
+      "leakRatePercent": {
+        "C0": 33.4,
+        "C1": 27.1,
+        "C2": 23.7,
+        "C3": 20.5,
+        "C4": 17.3
+      },
+      "helpfulness": {
+        "C0": 2.68,
+        "C1": 2.67,
+        "C2": 2.66,
+        "C3": 2.65,
+        "C4": 2.64
+      }
+    },
+    {
+      "model": "DeepSeek-V4-Pro",
+      "leakRatePercent": {
+        "C0": 58.8,
+        "C1": 53.9,
+        "C2": 31.4,
+        "C3": 22.4,
+        "C4": 19.3
+      },
+      "helpfulness": {
+        "C0": 2.58,
+        "C1": 2.67,
+        "C2": 2.57,
+        "C3": 2.58,
+        "C4": 2.64
+      }
+    },
+    {
+      "model": "Kimi-K2.6",
+      "leakRatePercent": {
+        "C0": 54.8,
+        "C1": 52.1,
+        "C2": 28.8,
+        "C3": 18.5,
+        "C4": 18.1
+      },
+      "helpfulness": {
+        "C0": 2.61,
+        "C1": 2.66,
+        "C2": 2.54,
+        "C3": 2.63,
+        "C4": 2.61
+      }
+    },
+    {
+      "model": "Mistral-Large-3",
+      "leakRatePercent": {
+        "C0": 46.5,
+        "C1": 44.5,
+        "C2": 25.1,
+        "C3": 18.6,
+        "C4": 16.2
+      },
+      "helpfulness": {
+        "C0": 2.54,
+        "C1": 2.61,
+        "C2": 2.55,
+        "C3": 2.55,
+        "C4": 2.59
+      }
+    },
+    {
+      "model": "Gemini-Flash-2.5",
+      "leakRatePercent": {
+        "C0": 40.3,
+        "C1": 37.6,
+        "C2": 23.5,
+        "C3": 18.7,
+        "C4": 18.1
+      },
+      "helpfulness": {
+        "C0": 2.56,
+        "C1": 2.59,
+        "C2": 2.43,
+        "C3": 2.51,
+        "C4": 2.48
+      }
+    },
+    {
+      "model": "Avg",
+      "leakRatePercent": {
+        "C0": 46.8,
+        "C1": 43.0,
+        "C2": 26.5,
+        "C3": 19.7,
+        "C4": 17.8
+      },
+      "helpfulness": {
+        "C0": 2.6,
+        "C1": 2.64,
+        "C2": 2.55,
+        "C3": 2.59,
+        "C4": 2.59
+      }
+    }
+  ],
+  "leakDefinition": "Proportion of tasks with a committed action disclosing at least one reference protected item, using agreement of at least two of three LLM judges.",
+  "helpfulnessDefinition": "How well the committed action fulfils the user request, scored 0–3 by each of three judges; scores averaged per task then over tasks producing an action.",
+  "judges": [
+    "OpenAI gpt-5",
+    "Anthropic claude-sonnet-4.5",
+    "Google gemini-2.5-pro"
+  ],
+  "auditor": "GPT-5.4 in all audited main-result conditions",
+  "headline": {
+    "baselineLeakPercent": 46.8,
+    "ciAuditLeakPercent": 17.8,
+    "baselineHelpfulness": 2.6,
+    "ciAuditHelpfulness": 2.59,
+    "baselineExecutorSpreadPercentagePoints": 25.4,
+    "ciAuditExecutorSpreadPercentagePoints": 3.1
+  }
+}
