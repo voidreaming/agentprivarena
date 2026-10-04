@@ -48,8 +48,8 @@ BookStack instances require a manually provisioned API token.
 | [base/](base/) | Service seeding, outcome and trajectory evaluation, and statistical analysis |
 | [docker-compose.yml](docker-compose.yml) | Local service stack and MCP containers |
 | [tests/](tests/) | Focused platform unit tests |
-| [../openhands-sdk/openhands/sdk/privacy/](../openhands-sdk/openhands/sdk/privacy/) | Reusable privacy analysis and audit hooks |
-| [../openhands-workspace/](../openhands-workspace/) | Docker workspace implementation |
+| [../packages/sdk/openhands/sdk/privacy/](../packages/sdk/openhands/sdk/privacy/) | Reusable privacy analysis and audit hooks |
+| [../packages/workspace/](../packages/workspace/) | Docker workspace implementation |
 
 The service stack provides BookStack for knowledge pages, Mattermost for direct
 messages, RocketChat for chat channels, Mailpit for captured email, GoToSocial

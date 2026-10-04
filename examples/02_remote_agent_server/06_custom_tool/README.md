@@ -239,13 +239,13 @@ with DockerDevWorkspace(
 ## Related Documentation
 
 - [Standalone Custom Tools Example](../../01_standalone_sdk/02_custom_tools.py)
-- [Tool Definition API](../../../openhands-sdk/openhands/sdk/tool/)
-- [Agent Server API](../../../openhands-agent-server/)
+- [Tool Definition API](../../../packages/sdk/openhands/sdk/tool/)
+- [Agent Server API](../../../packages/agent-server/)
 - [Dynamic Tool Registration](https://github.com/OpenHands/software-agent-sdk/pull/1129)
 
 ## Questions?
 
 If you have questions or run into issues:
 1. Check the [SDK documentation](https://docs.all-hands.dev/sdk/)
-2. Review existing tools in `openhands-tools/`
+2. Review existing tools in `packages/tools/`
 3. Open an issue on [GitHub](https://github.com/OpenHands/software-agent-sdk/issues)

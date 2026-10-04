@@ -2,11 +2,29 @@
 
 import hashlib
 import json
+import tomllib
 from pathlib import Path
 
 import pytest
 
 from scripts.export_public_release import export_snapshot, select_files
+
+
+def test_public_selection_includes_all_runtime_packages() -> None:
+    source = Path(__file__).resolve().parents[2]
+    manifest = tomllib.loads((source / "public-release.toml").read_text())
+    files = set(select_files(source, manifest["include"]))
+
+    for package in ("sdk", "tools", "workspace", "agent-server"):
+        assert Path("packages", package, "pyproject.toml") in files
+        assert any(
+            path.parts[:2] == ("packages", package) and path.suffix == ".py"
+            for path in files
+        )
+    assert (
+        Path("packages/agent-server/openhands/agent_server/docker/Dockerfile") in files
+    )
+    assert Path("packages/sdk/openhands/sdk/privacy/analyzer.py") in files
 
 
 def test_snapshot_copies_only_selected_content(tmp_path: Path) -> None:

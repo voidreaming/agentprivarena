@@ -111,7 +111,7 @@ class AgentStateWriteVisitor(ast.NodeVisitor):
 
 def get_sdk_python_files() -> list[Path]:
     """Get all Python files in the SDK source directory."""
-    sdk_dir = Path(__file__).parent.parent.parent.parent / "openhands-sdk"
+    sdk_dir = Path(__file__).resolve().parents[3] / "packages" / "sdk"
     if not sdk_dir.exists():
         pytest.skip(f"SDK directory not found: {sdk_dir}")
 

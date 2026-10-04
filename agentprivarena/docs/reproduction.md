@@ -75,7 +75,7 @@ host-side runner:
 
 ```bash
 docker build \
-  -f openhands-agent-server/openhands/agent_server/docker/Dockerfile \
+  -f packages/agent-server/openhands/agent_server/docker/Dockerfile \
   --target source-minimal \
   -t agentprivarena-agent-server:local .
 export OH_PRELOAD_TOOLS=false

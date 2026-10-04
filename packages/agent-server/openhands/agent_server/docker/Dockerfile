@@ -33,10 +33,10 @@ USER ${USERNAME}
 WORKDIR /agent-server
 # Cache-friendly: lockfiles first
 COPY --chown=${USERNAME}:${USERNAME} pyproject.toml uv.lock README.md LICENSE ./
-COPY --chown=${USERNAME}:${USERNAME} openhands-sdk ./openhands-sdk
-COPY --chown=${USERNAME}:${USERNAME} openhands-tools ./openhands-tools
-COPY --chown=${USERNAME}:${USERNAME} openhands-workspace ./openhands-workspace
-COPY --chown=${USERNAME}:${USERNAME} openhands-agent-server ./openhands-agent-server
+COPY --chown=${USERNAME}:${USERNAME} packages/sdk ./packages/sdk
+COPY --chown=${USERNAME}:${USERNAME} packages/tools ./packages/tools
+COPY --chown=${USERNAME}:${USERNAME} packages/workspace ./packages/workspace
+COPY --chown=${USERNAME}:${USERNAME} packages/agent-server ./packages/agent-server
 RUN \
     uv venv --python-preference only-system .venv && uv sync --frozen --no-editable --extra boto3
 
@@ -52,7 +52,7 @@ RUN \
     uv sync --frozen --dev --no-editable --extra boto3
 
 RUN \
-    uv run pyinstaller openhands-agent-server/openhands/agent_server/agent-server.spec
+    uv run pyinstaller packages/agent-server/openhands/agent_server/agent-server.spec
 # Fail fast if the expected binary is missing
 RUN test -x /agent-server/dist/openhands-agent-server
 
@@ -189,7 +189,7 @@ RUN set -eux; \
 
 # Include VSCode extensions alongside the server so targets inheriting base-image
 # implicitly get the extensions; minimal images (without VSCode) won't.
-COPY --chown=${USERNAME}:${USERNAME} --from=builder /agent-server/openhands-agent-server/openhands/agent_server/vscode_extensions ${OPENVSCODE_SERVER_ROOT}/extensions
+COPY --chown=${USERNAME}:${USERNAME} --from=builder /agent-server/packages/agent-server/openhands/agent_server/vscode_extensions ${OPENVSCODE_SERVER_ROOT}/extensions
 
 # --- Docker ---
 RUN set -eux; \
@@ -250,7 +250,7 @@ ENV NOVNC_WEB=/usr/share/novnc \
 
 RUN chown -R ${USERNAME}:${USERNAME} ${NOVNC_WEB}
 # Override default XFCE wallpaper
-COPY --chown=${USERNAME}:${USERNAME} openhands-agent-server/openhands/agent_server/docker/wallpaper.svg /usr/share/backgrounds/xfce/xfce-shapes.svg
+COPY --chown=${USERNAME}:${USERNAME} packages/agent-server/openhands/agent_server/docker/wallpaper.svg /usr/share/backgrounds/xfce/xfce-shapes.svg
 
 USER ${USERNAME}
 WORKDIR /

@@ -121,10 +121,10 @@ def main(files: list[str] | None = None) -> int:
         0 if no violations found, 1 otherwise.
     """
     repo_root = Path(__file__).parent.parent
-    sdk_path = repo_root / "openhands-sdk" / "openhands" / "sdk"
-    tools_path = repo_root / "openhands-tools" / "openhands" / "tools"
+    sdk_path = repo_root / "packages" / "sdk" / "openhands" / "sdk"
+    tools_path = repo_root / "packages" / "tools" / "openhands" / "tools"
     agent_server_path = (
-        repo_root / "openhands-agent-server" / "openhands" / "agent_server"
+        repo_root / "packages" / "agent-server" / "openhands" / "agent_server"
     )
 
     # If specific files are provided, filter checks to only those directories

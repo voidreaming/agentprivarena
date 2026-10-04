@@ -1,10 +1,11 @@
 # Publishing AgentPrivArena
 
 AgentPrivArena publishes AgentPrivAudit, the live evaluation harness, the four
-customized OpenHands packages, source tests, and usage examples. The research
-package and CLI use `agentprivarena`; the underlying SDK keeps its `openhands.*`
-Python namespaces. The root README introduces the paper;
-`docs/openhands-sdk.md` preserves the upstream SDK overview and citation.
+customized runtime packages under `packages/`, source tests, and usage examples.
+The research package and CLI use `agentprivarena`; the underlying SDK keeps its
+`openhands.*` Python namespaces and distribution names. The root README
+introduces the paper; `docs/openhands-sdk.md` preserves the upstream SDK overview
+and citation.
 
 The canonical repository is
 [voidreaming/agentprivarena](https://github.com/voidreaming/agentprivarena).

@@ -1,34 +1,43 @@
 ---
-title: OpenHands Agent SDK Tests
-description: Test suite structure and execution strategy for the OpenHands Agent SDK. Includes unit tests, integration tests, and CI configuration.
+title: AgentPrivArena Tests
+description: Research regression tests and inherited runtime test suites.
 ---
 
-# OpenHands Agent SDK Tests
+# AgentPrivArena Tests
 
-This directory contains the test suite for the OpenHands Agent SDK.
+This directory contains research release checks and the inherited runtime test
+suites. The focused research unit tests also live in `agentprivarena/tests/`.
 
 ## Test Structure
 
 ```
 tests/
-├── cross/         # Cross-package tests
-├── integration/   # Integration tests
-├── sdk/           # SDK unit tests
-└── tools/         # Tools unit tests
+├── agentprivarena/  # Research CLI, configuration, and public release checks
+├── agent_server/   # Agent-server unit tests
+├── cross/          # Cross-package tests
+├── integration/    # Integration tests
+├── sdk/            # SDK unit tests
+├── tools/          # Tools unit tests
+└── workspace/      # Workspace unit tests
 ```
 
 ## Test Categories
 
 ### Integration Tests (`integration`)
 
-End-to-end tests that cover large parts of the code base and are generally slower than other tests.
-**CI Execution:** The CI runs those tests nightly. Code changes do not trigger those tests to run.
+End-to-end tests cover large parts of the code base and may require model
+credentials or external services. They are not run by the offline research CI
+workflow. Some behavior tests deliberately clone a pinned upstream repository;
+paths in those fixtures describe that upstream layout, not this checkout.
 
 ### Unit Tests (`cross`, `sdk`, `tools`)
 
-Component-specific tests that prevent regressions in core functionality.
+Component-specific tests prevent regressions in core functionality. Runtime
+sources live under `packages/sdk`, `packages/tools`, `packages/workspace`, and
+`packages/agent-server`; their test directories retain the corresponding domain
+names.
 
-**CI Execution:** The CI runs these tests intelligently based on code changes:
-- **SDK Tests** (`sdk/`): Run when changes are detected in `openhands-sdk/**` or `tests/sdk/**`
-- **Tools Tests** (`tools/`): Run when changes are detected in `openhands-tools/**` or `tests/tools/**`
-- **Cross Tests** (`cross/`): Run when changes are detected in any source code or test files
+The [research CI workflow](../.github/workflows/agentprivarena-tests.yml) runs the
+offline research and privacy regression suite on pushes to `main` and relevant
+pull requests, including changes under `packages/`. Other inherited runtime
+tests can be run locally; see the [development guide](../DEVELOPMENT.md).

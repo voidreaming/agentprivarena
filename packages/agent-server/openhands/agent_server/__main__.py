@@ -141,9 +141,9 @@ def main() -> None:
         port=args.port,
         reload=args.reload,
         reload_includes=[
-            "openhands-agent-server",
-            "openhands-sdk",
-            "openhands-tools",
+            "packages/agent-server",
+            "packages/sdk",
+            "packages/tools",
         ],
         log_level=log_level,
         log_config=LOGGING_CONFIG,

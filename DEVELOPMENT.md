@@ -1,7 +1,9 @@
 # Development Guide
 
-AgentPrivArena retains the OpenHands workspace packages and Python namespaces.
-The research harness and CLI live in the `agentprivarena` package.
+The research harness and CLI live in `agentprivarena/`. Shared runtime components
+are grouped under `packages/` with concise directory names. Their existing
+`openhands.*` Python namespaces and distribution names remain unchanged, so
+imports, plugins, and dependency resolution stay compatible.
 
 ## Setup
 
@@ -41,14 +43,19 @@ uv run pytest agentprivarena/tests tests/agentprivarena tests/sdk/privacy \
 
 ```
 agentprivarena/
-├── openhands-sdk/          # Core SDK package
-├── openhands-tools/        # Built-in tools
-├── openhands-workspace/    # Workspace management
-├── openhands-agent-server/ # Agent server
-├── examples/               # Usage examples
 ├── agentprivarena/         # Research harness, MCP services, and evaluators
+├── packages/
+│   ├── sdk/                # Core runtime and privacy audit hooks
+│   ├── tools/              # Built-in tools
+│   ├── workspace/          # Workspace management
+│   └── agent-server/       # Agent server and Docker image
+├── examples/               # Usage examples
 └── tests/                  # Test suites
 ```
+
+Run workspace commands from the repository root. For example,
+`uv run --package openhands-sdk python -c "import openhands.sdk"` still uses the
+distribution name, while source paths now begin with `packages/sdk/`.
 
 ## Contributing
 

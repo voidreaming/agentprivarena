@@ -82,7 +82,8 @@ def test_custom_security_policy_in_system_message():
         # Copy required template files to temp directory
         original_prompt_dir = (
             Path(__file__).parent.parent.parent.parent
-            / "openhands-sdk"
+            / "packages"
+            / "sdk"
             / "openhands"
             / "sdk"
             / "agent"

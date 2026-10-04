@@ -70,10 +70,10 @@ def _default_sdk_project_root() -> Path:
     def _is_workspace_root(d: Path) -> bool:
         """Detect if d is the root of the Agent-SDK repo UV workspace."""
         _EXPECTED = (
-            "openhands-sdk/pyproject.toml",
-            "openhands-tools/pyproject.toml",
-            "openhands-workspace/pyproject.toml",
-            "openhands-agent-server/pyproject.toml",
+            "packages/sdk/pyproject.toml",
+            "packages/tools/pyproject.toml",
+            "packages/workspace/pyproject.toml",
+            "packages/agent-server/pyproject.toml",
         )
 
         py = d / "pyproject.toml"
@@ -91,10 +91,10 @@ def _default_sdk_project_root() -> Path:
         if members:
             norm = {str(Path(m)) for m in members}
             return {
-                "openhands-sdk",
-                "openhands-tools",
-                "openhands-workspace",
-                "openhands-agent-server",
+                "packages/sdk",
+                "packages/tools",
+                "packages/workspace",
+                "packages/agent-server",
             }.issubset(norm)
         return all((d / p).exists() for p in _EXPECTED)
 
@@ -121,10 +121,10 @@ def _default_sdk_project_root() -> Path:
                 f"starting at '{p}'.\n\n"
                 "Expected setup (repo root):\n"
                 "  pyproject.toml  # has [tool.uv.workspace] with members\n"
-                "  openhands-sdk/pyproject.toml\n"
-                "  openhands-tools/pyproject.toml\n"
-                "  openhands-workspace/pyproject.toml\n"
-                "  openhands-agent-server/pyproject.toml\n\n"
+                "  packages/sdk/pyproject.toml\n"
+                "  packages/tools/pyproject.toml\n"
+                "  packages/workspace/pyproject.toml\n"
+                "  packages/agent-server/pyproject.toml\n\n"
                 "Fix:\n"
                 "  - Run from anywhere inside the repo."
             )
@@ -145,11 +145,11 @@ def _default_sdk_project_root() -> Path:
         "Could not resolve the OpenHands UV workspace root.\n\n"
         "Expected repo layout:\n"
         "  pyproject.toml  (with [tool.uv.workspace].members "
-        "including openhands/* subprojects)\n"
-        "  openhands-sdk/pyproject.toml\n"
-        "  openhands-tools/pyproject.toml\n"
-        "  openhands-workspace/pyproject.toml\n"
-        "  openhands-agent-server/pyproject.toml\n\n"
+        "including packages/* subprojects)\n"
+        "  packages/sdk/pyproject.toml\n"
+        "  packages/tools/pyproject.toml\n"
+        "  packages/workspace/pyproject.toml\n"
+        "  packages/agent-server/pyproject.toml\n\n"
         "Run this from inside the repo."
     )
 
@@ -333,7 +333,7 @@ def _package_version() -> str:
         # If package is not installed, try reading from pyproject.toml
         try:
             sdk_root = _default_sdk_project_root()
-            pyproject_path = sdk_root / "openhands-sdk" / "pyproject.toml"
+            pyproject_path = sdk_root / "packages" / "sdk" / "pyproject.toml"
             if pyproject_path.exists():
                 cfg = tomllib.loads(pyproject_path.read_text(encoding="utf-8"))
                 return cfg.get("project", {}).get("version", "unknown")
@@ -593,7 +593,8 @@ def _default_local_cache_dir() -> Path:
 def _get_dockerfile_path(sdk_project_root: Path) -> Path:
     dockerfile_path = (
         sdk_project_root
-        / "openhands-agent-server"
+        / "packages"
+        / "agent-server"
         / "openhands"
         / "agent_server"
         / "docker"

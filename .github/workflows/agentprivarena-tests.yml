@@ -8,15 +8,16 @@ on:
     pull_request:
         paths:
             - agentprivarena/**
-            - openhands-sdk/**
-            - openhands-tools/**
-            - openhands-workspace/**
-            - openhands-agent-server/**
+            - packages/**
             - tests/agentprivarena/**
             - tests/sdk/privacy/**
             - tests/sdk/testing/**
             - tests/tools/apply_patch/**
             - tests/sdk/agent/test_privacy_extraction.py
+            - tests/sdk/agent/test_security_policy_integration.py
+            - tests/sdk/context/test_prompt_absolute_path.py
+            - tests/sdk/conversation/test_agent_state_reassignment.py
+            - tests/agent_server/test_docker_build.py
             - scripts/export_public_release.py
             - public-release.toml
             - pyproject.toml
@@ -43,5 +44,9 @@ jobs:
                   uv run pytest agentprivarena/tests tests/agentprivarena
                   tests/sdk/privacy tests/sdk/agent/test_privacy_extraction.py
                   tests/sdk/testing tests/tools/apply_patch
+                  tests/sdk/agent/test_security_policy_integration.py
+                  tests/sdk/context/test_prompt_absolute_path.py
+                  tests/sdk/conversation/test_agent_state_reassignment.py
+                  tests/agent_server/test_docker_build.py
             - name: Check public file selection
               run: uv run python scripts/export_public_release.py

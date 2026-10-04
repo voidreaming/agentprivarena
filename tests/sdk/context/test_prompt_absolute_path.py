@@ -16,7 +16,7 @@ def test_render_template_with_relative_path():
     # Use the agent's default prompts directory
     agent_prompts_dir = os.path.join(
         os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
-        "../openhands-sdk/openhands/sdk/agent/prompts",
+        "../packages/sdk/openhands/sdk/agent/prompts",
     )
     agent_prompts_dir = os.path.abspath(agent_prompts_dir)
 

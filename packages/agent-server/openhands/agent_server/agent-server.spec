@@ -16,14 +16,14 @@ from PyInstaller.utils.hooks import (
 project_root = Path.cwd()
 # Namespace roots must be in pathex so PyInstaller can find 'openhands/...'
 PATHEX = [
-    project_root / "openhands-agent-server",
-    project_root / "openhands-sdk",
-    project_root / "openhands-tools",
-    project_root / "openhands-workspace",
+    project_root / "packages/agent-server",
+    project_root / "packages/sdk",
+    project_root / "packages/tools",
+    project_root / "packages/workspace",
 ]
 
 # Entry script for the agent server package (namespace: openhands/agent_server/__main__.py)
-ENTRY = str(project_root / "openhands-agent-server" / "openhands" / "agent_server" / "__main__.py")
+ENTRY = str(project_root / "packages/agent-server" / "openhands" / "agent_server" / "__main__.py")
 
 # Find fakeredis package location to get commands.json with correct path
 def get_fakeredis_data():

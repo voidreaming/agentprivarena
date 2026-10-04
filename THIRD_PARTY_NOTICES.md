@@ -28,6 +28,9 @@ Numerical results are transcribed from Table 4 on PDF page 6, with the full valu
 
 This repository includes and modifies the
 [OpenHands Software Agent SDK](https://github.com/OpenHands/software-agent-sdk).
+Its runtime components are organized under `packages/sdk`, `packages/tools`,
+`packages/workspace`, and `packages/agent-server`; their Python namespaces and
+distribution names are preserved.
 The OpenHands MIT license and its copyright notice are preserved in
 [LICENSE](LICENSE), including:
 

@@ -14,6 +14,7 @@
 
 <p>
   <a href="#what-agentprivarena-contributes">Highlights</a> ·
+  <a href="#real-service-environment">Services</a> ·
   <a href="#agentprivaudit">Method</a> ·
   <a href="#results">Results</a> ·
   <a href="#quick-start">Quick start</a> ·
@@ -53,6 +54,36 @@ trajectory: the agent must discover them through its own tool calls.*
   conditions on the same 389 executable tasks, adapted from PrivacyLens.
   Separate ablations test whether the privacy criterion is merely instructed or
   enforced, and how the auditor model affects protection.
+
+## Real service environment
+
+**Real applications, real state, real tool calls.** All six services are
+unmodified open-source applications, self-hosted in containers. Each task seeds
+synthetic records into application state; MCP wrappers expose the services'
+native APIs so the agent discovers records and commits actions through actual
+services, rather than replaying a prewritten trajectory.
+
+| Service | Application function | Version used in the paper | Example MCP tools |
+| --- | --- | :---: | --- |
+| [BookStack](https://www.bookstackapp.com) | Knowledge base | **26.03.3** | `search_pages`, `read_page`, `create_page` |
+| [Mattermost](https://mattermost.com) | Direct messaging | **11.6.0** | `search_messages`, `read_messages`, `send_message` |
+| [Rocket.Chat](https://www.rocket.chat) | Team chat | **6.13** | `list_channels`, `read_channel_history`, `send_channel_message` |
+| [Mailpit](https://mailpit.axllent.org) | Email | **1.29.7** | `search_emails`, `read_email`, `send_email` |
+| [GoToSocial](https://gotosocial.org) | Social media | **0.21.2** | `search_users`, `read_user_posts`, `create_post` |
+| [Radicale](https://radicale.org) | Calendar scheduling | **3.6.1** | `search_events`, `list_events`, `read_event` |
+
+Together, these services expose **28 MCP tools: 13 discovery, 8 access, and
+7 write tools**. These classes describe tool intent, not a privacy boundary:
+search results can themselves contain sensitive record content.
+
+Versions are the experimental versions reported in
+[Table 2 of the paper](https://voidreaming.github.io/agentprivarena/assets/agentprivarena.pdf#page=3),
+not claims about current releases. The
+[Docker Compose configuration](agentprivarena/docker-compose.yml) pins all six
+application images by **full SHA-256 digest**; Appendix B records their
+provenance. See the [MCP adapters](agentprivarena/mcp_servers/) for the executable
+tool interfaces and [Appendix A](https://voidreaming.github.io/agentprivarena/assets/agentprivarena.pdf#page=12)
+for the complete tool inventory.
 
 ## AgentPrivAudit
 
@@ -192,10 +223,11 @@ agentprivarena/           Research CLI, configuration, and service deployment
 ├── runner/              Agent execution and trajectory collection
 ├── base/                Outcome/trajectory evaluation and aggregation
 └── docs/                Reproduction and release guides
-openhands-sdk/           Agent runtime and AgentPrivAudit in openhands.sdk.privacy
-openhands-tools/         Built-in tools
-openhands-workspace/     Local and container workspaces
-openhands-agent-server/  Container-side runtime
+packages/               Customized agent infrastructure
+├── sdk/                 Agent runtime and AgentPrivAudit in openhands.sdk.privacy
+├── tools/               Built-in tools
+├── workspace/           Local and container workspaces
+└── agent-server/        Container-side runtime
 tests/                  SDK and release regression tests
 dist/                   Project website, manuscript, and original paper figures
 ```
