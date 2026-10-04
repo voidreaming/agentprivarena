@@ -253,7 +253,7 @@ scripts/
 examples/
 .ruff_cache/
 results/
-privacylens_live/tasks/
+agentprivarena/tasks/
 .uv-cache/
 Makefile
 docs/

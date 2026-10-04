@@ -1,4 +1,4 @@
-"""Export the reviewed working-tree files without Git history or private data.
+"""Export reviewed source and paper figures without Git history or private data.
 
 The allowlist selects paths, not safe content: review the resulting snapshot
 and scan it for secrets before publishing. No files are staged or committed.
@@ -36,7 +36,7 @@ def select_files(root: Path, patterns: list[str]) -> list[Path]:
             if not path.is_file():
                 raise ValueError(f"Release selection is not a regular file: {relative}")
             if path.name.startswith(".env") and relative != Path(
-                "privacylens_live/.env.example"
+                "agentprivarena/.env.example"
             ):
                 raise ValueError(
                     f"Release selection contains local settings: {relative}"
@@ -50,7 +50,7 @@ def select_files(root: Path, patterns: list[str]) -> list[Path]:
 
 
 def export_snapshot(root: Path, files: list[Path], destination: Path) -> None:
-    """Copy source files into a new directory and record their SHA-256 hashes."""
+    """Copy selected files into a new directory and record their SHA-256 hashes."""
     # exist_ok=False prevents mixing a release with any previous contents.
     destination.mkdir(parents=True, exist_ok=False)
     hashes: dict[str, str] = {}

@@ -121,8 +121,8 @@ celerybeat.pid
 # Environments
 .env
 .env.*
-!privacylens_live/.env.example
-!privacylens_live/mcp_servers/requirements.txt
+!agentprivarena/.env.example
+!agentprivarena/mcp_servers/requirements.txt
 .venv
 env/
 venv/
@@ -219,7 +219,7 @@ tests/integration/api_compliance/outputs/
 # Agent-generated temp
 .agent_tmp/
 
-# PrivacyLens-Live: large artifacts / data / binaries (regenerable or externally sourced)
+# AgentPrivArena: large artifacts / data / binaries (regenerable or externally sourced)
 /results/
 /image/
 /main_data.json
@@ -227,7 +227,7 @@ tests/integration/api_compliance/outputs/
 /*.pdf
 
 # Upstream PrivacyLens artifacts, kept locally for provenance but not vendored.
-# The judge prompts in privacylens_live/base/evaluator.py cite line numbers in
+# The judge prompts in agentprivarena/base/evaluator.py cite line numbers in
 # evaluate_final_action.py, so keep the file around to check those citations.
 /evaluate_final_action.py
 /get_final_action.py

@@ -1,1 +1,1 @@
-"""AgentPrivArena: Real-service privacy evaluation for language-model agents."""
+"""AgentPrivArena: Real-service privacy evaluation and runtime agent auditing."""

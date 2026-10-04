@@ -39,7 +39,7 @@ does not replace their terms.
 
 ## PrivacyLens evaluator code and prompts
 
-[privacylens_live/base/evaluator.py](privacylens_live/base/evaluator.py) includes
+[agentprivarena/base/evaluator.py](agentprivarena/base/evaluator.py) includes
 evaluation prompts and logic adapted from the
 [PrivacyLens project](https://github.com/SALT-NLP/PrivacyLens). Its comments
 identify prompts preserved verbatim and prompts adapted for live-service

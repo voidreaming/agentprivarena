@@ -1,6 +1,6 @@
-"""Run the AgentPrivArena CLI with ``python -m agentprivarena``."""
+"""Allow running as `python -m agentprivarena`."""
 
-from privacylens_live.cli import main
+from agentprivarena.cli import main
 
 
 if __name__ == "__main__":
